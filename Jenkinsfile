@@ -8,9 +8,16 @@ pipeline {
     agent any
 
     stages {
+        stage('CLEAN WORKSPACE') {
+            steps {
+                cleanWs()
+            }
+        }
+        
         stage('CHECKOUT GIT') {
             steps {
-                git 'https://github.com/NourhenHamza/spring-boot-devops.git';
+                git branch: 'develop', 
+                    url: 'https://github.com/NourhenHamza/spring-boot-devops.git'
             }
         }
 
@@ -50,7 +57,6 @@ pipeline {
             steps {
                 script {
                     dockerImage = docker.build registry + ":$BUILD_NUMBER"
-                    sh 'java -version'
                 }
             }
         }
@@ -60,7 +66,7 @@ pipeline {
                 script {
                     docker.withRegistry('', registryCredential) {
                         dockerImage.push()
-                        sh 'java -version'
+                        dockerImage.push('latest')
                     }
                 }
             }
