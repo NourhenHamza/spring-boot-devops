@@ -1,19 +1,18 @@
 pipeline {
+    agent {
+        docker {
+            image 'maven:3.8.5-openjdk-17'
+            args '-v /root/.m2:/root/.m2'
+        }
+    }
+    
     environment {
         registry = "NourhenHamza/spring-boot-devops"
         registryCredential = 'dockerhub'
         dockerImage = ''
     }
 
-    agent any
-
     stages {
-        stage('CLEAN WORKSPACE') {
-            steps {
-                cleanWs()
-            }
-        }
-        
         stage('CHECKOUT GIT') {
             steps {
                 git branch: 'develop', 
@@ -43,7 +42,7 @@ pipeline {
 
         stage('MVN SONARQUBE') {
             steps {
-                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar'
+                sh 'mvn sonar:sonar -Dsonar.host.url=http://host.docker.internal:9000 -Dsonar.login=admin -Dsonar.password=admin'
             }
         }
 
