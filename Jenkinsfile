@@ -37,7 +37,7 @@ pipeline {
 
         stage('MVN SONARQUBE') {
             steps {
-                sh 'mvn sonar:sonar -Dsonar.host.url=http://host.docker.internal:9000 -Dsonar.login=admin -Dsonar.password=admin'
+                sh 'mvn sonar:sonar -Dsonar.host.url=http://host.docker.internal:9000 -Dsonar.login=admin -Dsonar.password=nourhen123'
             }
         }
 
