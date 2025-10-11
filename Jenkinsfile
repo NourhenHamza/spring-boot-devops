@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('CHECKOUT GIT') {
             steps {
-                git 'https://gitlab.com/ThourayaLouati/docker-spring-boot.git&#39;
+                git 'https://github.com/NourhenHamza/spring-boot-devops.git';
             }
         }
 
