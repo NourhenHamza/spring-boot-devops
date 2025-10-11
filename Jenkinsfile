@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3.8.5-openjdk-17'
-            args '-v /root/.m2:/root/.m2'
-        }
-    }
+    agent any
     
     environment {
         registry = "NourhenHamza/spring-boot-devops"
@@ -42,7 +37,7 @@ pipeline {
 
         stage('MVN SONARQUBE') {
             steps {
-                sh 'mvn sonar:sonar -Dsonar.host.url=http://host.docker.internal:9000 -Dsonar.login=admin -Dsonar.password=nourhen123'
+                sh 'mvn sonar:sonar -Dsonar.host.url=http://host.docker.internal:9000 -Dsonar.login=admin -Dsonar.password=admin'
             }
         }
 
@@ -69,6 +64,19 @@ pipeline {
                     }
                 }
             }
+        }
+    }
+    
+    post {
+        always {
+            echo 'Pipeline execution completed'
+        }
+        success {
+            echo 'Pipeline succeeded!'
+            echo "SonarQube analysis available at: http://localhost:9000/dashboard?id=tn.esprit.spring%3Adocker-spring-boot"
+        }
+        failure {
+            echo 'Pipeline failed!'
         }
     }
 }
